@@ -11,11 +11,13 @@ const Board = () => {
   return (
     <div className="board">
       {board.map((row, rowIdx) => (
-        <div key={rowIdx} className="row">{
-          row.map((cell, cellIdx) => (
-            <div key={cellIdx} className="cell"></div>  
-          ))
-        }</div>
+        <div key={rowIdx} className="row">
+          {row.map((cell, cellIdx) => (
+            <div 
+            key={cellIdx} 
+            className={`cell $true ? 'snake-cell' : ''}`}></div>  
+          ))}
+          </div>
       ))}
     </div>
   )
