@@ -1,6 +1,21 @@
 import React, {useState} from 'react';
 import './Board.css';
 
+class LinkedListNode {
+  constructor(value) {
+    this.value = value;
+    this.next = null;
+  }
+}
+
+class SinglyLinkedList {
+  constructor(value) {
+    const node = new LinkedListNode(value);
+    this.head = node;
+    this.tail = node;
+  }
+}
+
 const BOARD_SIZE = 10;
 
 const Board = () => {
