@@ -19,9 +19,9 @@ class SinglyLinkedList {
 const BOARD_SIZE = 10;
 
 const Board = () => {
-  const [board, setBoard] = useState(
-    new Array(BOARD_SIZE).fill(0).map(row => new Array(BOARD_SIZE).fill(0)),
-  );
+  const [board, setBoard] = useState(createBoard(BOARD_SIZE));
+  const [snakeCells, setSnakeCells] = useState(new Set([44]));
+  const [snake, setSnake] = useState(new SinglyLinkedList(44));
 
   return (
     <div className="board">
@@ -37,5 +37,10 @@ const Board = () => {
     </div>
   )
 };
+
+const createBoard = BOARD_SIZE => {
+  let counter = 1;
+  const board = [];
+}
 
 export default Board;
