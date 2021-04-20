@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import './Board.css';
 
 class LinkedListNode {
@@ -22,6 +22,30 @@ const Board = () => {
   const [board, setBoard] = useState(createBoard(BOARD_SIZE));
   const [snakeCells, setSnakeCells] = useState(new Set([44]));
   const [snake, setSnake] = useState(new SinglyLinkedList(44));
+  const [direction, setDirection] = useState(Direction.RIGHT);
+
+  useEffect(() => {
+    setInterval(() => {
+      // function test() {
+      //   moveSnake();
+      // }
+
+      // test();
+    }, 1000);
+
+    window.addEventListener('keydown', e => {
+      const newDirection = getDirectionFromKey(e.key);
+      const isValidDirection = newDirection !== '';
+      if (isValidDirection) setDirection(newDirection);
+    })
+  }, []);
+
+  function moveSnake() {
+    const currentHeadCoords = {
+      row: snake.head.value.row,
+      col: snake.head.value.col,
+    };
+  }
 
   return (
     <div className="board">
