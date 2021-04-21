@@ -18,6 +18,13 @@ class SinglyLinkedList {
 
 const BOARD_SIZE = 10;
 
+const Direction = {
+  UP: 'UP',
+  RIGHT: 'RIGHT',
+  DOWN: 'DOWN',
+  LEFT: 'LEFT',
+};
+
 const Board = () => {
   const [board, setBoard] = useState(createBoard(BOARD_SIZE));
   const [snakeCells, setSnakeCells] = useState(new Set([44]));
