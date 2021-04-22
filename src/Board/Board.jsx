@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
+import { randomIntFromInterval } from '../lib/utils.js';
 import './Board.css';
 
 class LinkedListNode {
@@ -52,7 +53,19 @@ const Board = () => {
       row: snake.head.value.row,
       col: snake.head.value.col,
     };
-  }
+  };
+
+  const nextHeadCoords = getNextHeadCoords(currentHeadCoords, direction);
+  const nextHeadValue = board[nextHeadCoords.row][nextHeadCoords.col];
+  const newHead = new LinkedListNode(
+    new Cell(nextHeadCoords.row, nextHeadCoords.col, nextHeadValue),
+  );
+
+  const newSnakeCells = new Set(snakeCells);
+  newSnakeCells.delete(snake.tail.value.value);
+  newSnakeCells.add(nextHeadValue);
+
+  snake.head = newHead;
 
   return (
     <div className="board">
