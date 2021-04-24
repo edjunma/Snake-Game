@@ -57,6 +57,9 @@ const Board = () => {
 
   const nextHeadCoords = getNextHeadCoords(currentHeadCoords, direction);
   const nextHeadValue = board[nextHeadCoords.row][nextHeadCoords.col];
+
+  if (nextHeadValue === foodCell) handleFoodConsumption();
+
   const newHead = new LinkedListNode(
     new Cell(nextHeadCoords.row, nextHeadCoords.col, nextHeadValue),
   );
@@ -66,6 +69,19 @@ const Board = () => {
   newSnakeCells.add(nextHeadValue);
 
   snake.head = newHead;
+  snake.tail = snake.tail.next;
+  if (snake.tail === null) snake.tail = snake.head;
+
+  setSnakeCells(newSnakeCells);
+
+  const getNextHeadCoords = (currentHeadCoords, direction) => {
+    if (direction === Direction.UP) {
+      return {
+        row: currentHeadCoords.row - 1,
+        col: currentHeadCoords.col,
+      }
+    }
+  }
 
   return (
     <div className="board">
