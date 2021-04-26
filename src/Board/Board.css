@@ -13,10 +13,14 @@
 	display: inline-block;
 }
 
-.snake-cell {
+.cell-green {
 	background-color: green;
 }
 
-.food-cell {
+.cell-red {
 	background-color: red;
+}
+
+.cell-purple {
+	background-color: purple;
 }
