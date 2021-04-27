@@ -9,14 +9,13 @@ class LinkedListNode {
   }
 }
 
-class SinglyLinkedList {
+class LinkedList {
   constructor(value) {
     const node = new LinkedListNode(value);
     this.head = node;
     this.tail = node;
   }
 }
-
 
 const Direction = {
   UP: 'UP',
@@ -42,10 +41,20 @@ const getStartingSnakeLLValue = board => {
 };
 
 const Board = () => {
+  const [score, setScore] = useState(0);
   const [board, setBoard] = useState(createBoard(BOARD_SIZE));
-  const [snakeCells, setSnakeCells] = useState(new Set([44]));
-  const [snake, setSnake] = useState(new SinglyLinkedList(44));
+  const [snake, setSnake] = useState(
+    new LinkedList(getStartingSnakeLLValue(board)),
+  );
+  const [snakeCells, setSnakeCells] = useState(
+    new Set([snake.head.value.cell]),
+  );
+  // Naively set the starting food cell 5 cells away from the starting snake cell.
+  const [foodCell, setFoodCell] = useState(snake.head.value.cell + 5);
   const [direction, setDirection] = useState(Direction.RIGHT);
+  const [foodShouldReverseDirection, setFoodShouldReverseDirection] = useState(
+    false,
+  );
 
   useEffect(() => {
     setInterval(() => {
@@ -133,5 +142,12 @@ const getDirectionFromKey = key => {
   if (key === 'ArrowLeft') return Direction.LEFT;
   return '';
 }
+
+const getOppositeDirection = direction => {
+  if (direction === Direction.UP) return Direction.DOWN;
+  if (direction === Direction.RIGHT) return Direction.LEFT;
+  if (direction === Direction.DOWN) return Direction.UP;
+  if (direction === Direction.LEFT) return Direction.RIGHT;
+};
 
 export default Board;
