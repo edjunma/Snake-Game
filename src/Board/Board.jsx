@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react';
-import { randomIntFromInterval } from '../lib/utils.js';
+import { randomIntFromInterval, reverseLinkedList, useInterval } from '../lib/utils.js';
 import './Board.css';
 
 class LinkedListNode {
@@ -17,13 +17,28 @@ class SinglyLinkedList {
   }
 }
 
-const BOARD_SIZE = 10;
 
 const Direction = {
   UP: 'UP',
   RIGHT: 'RIGHT',
   DOWN: 'DOWN',
   LEFT: 'LEFT',
+};
+
+const BOARD_SIZE = 10;
+const PROBABILITY_OF_DIRECTION_REVERSAL_FOOD = 0.3;
+
+const getStartingSnakeLLValue = board => {
+  const rowSize = board.length;
+  const colSize = board[0].length;
+  const startingRow = Math.round(rowSize / 3);
+  const startingCol = Math.round(colSize / 3);
+  const startingCell = board[startingRow][startingCol];
+  return {
+    row: startingRow,
+    col: startingCol,
+    cell: startingCell,
+  };
 };
 
 const Board = () => {
