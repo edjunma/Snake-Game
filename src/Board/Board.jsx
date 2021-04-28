@@ -57,32 +57,42 @@ const Board = () => {
   );
 
   useEffect(() => {
-    setInterval(() => {
-      // function test() {
-      //   moveSnake();
-      // }
-
-      // test();
-    }, 1000);
-
     window.addEventListener('keydown', e => {
-      const newDirection = getDirectionFromKey(e.key);
-      const isValidDirection = newDirection !== '';
-      if (isValidDirection) setDirection(newDirection);
-    })
+      handleKeydown(e);
+    });
   }, []);
 
-  function moveSnake() {
-    const currentHeadCoords = {
-      row: snake.head.value.row,
-      col: snake.head.value.col,
+  useInterval(() => {
+    moveSnake();
+  }, 150);
+
+  const handleKeydown = e => {
+    const newDirection = getDirectionFromKey(e.key);
+    const isValidDirection = newDirection !== '';
+    if (!isValidDirection) return;
+    const snakeWillRunIntoItself =
+      getOppositeDirection(newDirection) === direction && snakeCells.size > 1;
+
+      if (snakeWillRunIntoItself) return;
+      setDirection(newDirection);
     };
-  };
 
-  const nextHeadCoords = getNextHeadCoords(currentHeadCoords, direction);
-  const nextHeadValue = board[nextHeadCoords.row][nextHeadCoords.col];
+  const moveSnake = () => {
+      const currentHeadCoords = {
+        row: snake.head.value.row,
+        col: snake.head.value.col,
+      };
 
-  if (nextHeadValue === foodCell) handleFoodConsumption();
+      const nextHeadCoords = getCoordsInDirection(currentHeadCoords, direction);
+      if (isOutOfBounds(nextHeadCoords, board)) {
+        handleGameOver();
+        return;
+      }
+      const nextHeadCell = board[nextHeadCoords.row][nextHeadCoords.col];
+      if (snakeCells.has(nextHeadCell)) {
+        handleGameOver();
+        return;
+      }
 
   const newHead = new LinkedListNode(
     new Cell(nextHeadCoords.row, nextHeadCoords.col, nextHeadValue),
