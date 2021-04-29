@@ -83,30 +83,43 @@ const Board = () => {
         col: snake.head.value.col,
       };
 
-      const nextHeadCoords = getCoordsInDirection(currentHeadCoords, direction);
+  const nextHeadCoords = getCoordsInDirection(currentHeadCoords, direction);
       if (isOutOfBounds(nextHeadCoords, board)) {
         handleGameOver();
         return;
       }
-      const nextHeadCell = board[nextHeadCoords.row][nextHeadCoords.col];
+  const nextHeadCell = board[nextHeadCoords.row][nextHeadCoords.col];
       if (snakeCells.has(nextHeadCell)) {
         handleGameOver();
         return;
       }
 
-  const newHead = new LinkedListNode(
-    new Cell(nextHeadCoords.row, nextHeadCoords.col, nextHeadValue),
-  );
-
+  const newHead = new LinkedListNode({
+        row: nextHeadCoords.row,
+        col: nextHeadCoords.col,
+        cell: nextHeadCell,
+      });
+  const currentHead = snake.head;
+      snake.head = newHead;
+      currentHead.next = newHead;
+  
   const newSnakeCells = new Set(snakeCells);
-  newSnakeCells.delete(snake.tail.value.value);
-  newSnakeCells.add(nextHeadValue);
+      newSnakeCells.delete(snake.tail.value.cell);
+      newSnakeCells.add(nextHeadCell);
 
-  snake.head = newHead;
-  snake.tail = snake.tail.next;
-  if (snake.tail === null) snake.tail = snake.head;
+      snake.tail = snake.tail.next;
+      if (snake.tail === null) snake.tail = snake.head;
 
-  setSnakeCells(newSnakeCells);
+      const foodConsumed = nextHeadCell === foodCell;
+    if (foodConsumed) {
+      // This function mutates newSnakeCells.
+      growSnake(newSnakeCells);
+      if (foodShouldReverseDirection) reverseSnake();
+      handleFoodConsumption(newSnakeCells);
+    }
+
+    setSnakeCells(newSnakeCells);
+  };
 
   const getNextHeadCoords = (currentHeadCoords, direction) => {
     if (direction === Direction.UP) {
