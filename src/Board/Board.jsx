@@ -121,6 +121,26 @@ const Board = () => {
     setSnakeCells(newSnakeCells);
   };
 
+  // This function mutates newSnakeCells.
+  const growSnake = newSnakeCells => {
+    const growthNodeCoords = getGrowthNodeCoords(snake.tail, direction);
+    if (isOutOfBounds(growthNodeCoords, board)) {
+      // Snake is positioned such that it can't grow; don't do anything.
+      return;
+    }
+    const newTailCell = board[growthNodeCoords.row][growthNodeCoords.col];
+    const newTail = new LinkedListNode({
+      row: growthNodeCoords.row,
+      col: growthNodeCoords.col,
+      cell: newTailCell,
+    });
+    const currentTail = snake.tail;
+    snake.tail = newTail;
+    snake.tail.next = currentTail;
+
+    newSnakeCells.add(newTailCell);
+  };
+
   const getNextHeadCoords = (currentHeadCoords, direction) => {
     if (direction === Direction.UP) {
       return {
