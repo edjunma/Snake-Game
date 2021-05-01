@@ -141,6 +141,19 @@ const Board = () => {
     newSnakeCells.add(newTailCell);
   };
 
+  const reverseSnake = () => {
+    const tailNextNodeDirection = getNextNodeDirection(snake.tail, direction);
+    const newDirection = getOppositeDirection(tailNextNodeDirection);
+    setDirection(newDirection);
+
+    // The tail of the snake is really the head of the linked list, which
+    // is why we have to pass the snake's tail to `reverseLinkedList`.
+    reverseLinkedList(snake.tail);
+    const snakeHead = snake.head;
+    snake.head = snake.tail;
+    snake.tail = snakeHead;
+  };
+
   const getNextHeadCoords = (currentHeadCoords, direction) => {
     if (direction === Direction.UP) {
       return {
