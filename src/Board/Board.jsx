@@ -154,6 +154,20 @@ const Board = () => {
     snake.tail = snakeHead;
   };
 
+  const handleFoodConsumption = newSnakeCells => {
+    const maxPossibleCellValue = BOARD_SIZE * BOARD_SIZE;
+    let nextFoodCell;
+    // In practice, this will never be a time-consuming operation. Even
+    // in the extreme scenario where a snake is so big that it takes up 90%
+    // of the board (nearly impossible), there would be a 10% chance of generating
+    // a valid new food cell--so an average of 10 operations: trivial.
+    while (true) {
+      nextFoodCell = randomIntFromInterval(1, maxPossibleCellValue);
+      if (newSnakeCells.has(nextFoodCell) || foodCell === nextFoodCell)
+        continue;
+      break;
+    }
+
   const getNextHeadCoords = (currentHeadCoords, direction) => {
     if (direction === Direction.UP) {
       return {
